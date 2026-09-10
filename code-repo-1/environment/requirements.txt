@@ -1,0 +1,12 @@
+# Pin exact versions used to produce the reported results.
+# Generate with: pip freeze > environment/requirements.txt
+# Example entries (replace with actual pinned versions):
+
+# python==3.10.13
+# torch==2.x.x
+# torchvision==0.x.x
+# numpy==1.x.x
+# pandas==2.x.x
+# scikit-learn==1.x.x
+# matplotlib==3.x.x
+# pyyaml==6.x.x

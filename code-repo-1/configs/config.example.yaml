@@ -1,0 +1,42 @@
+# Example experiment configuration.
+# Copy this file per experiment (e.g. config_expA.yaml) — never edit and
+# overwrite the config that produced a reported result.
+
+experiment_name: "[expA_baseline]"
+
+seed: 42
+deterministic: true
+
+data:
+  dataset_name: "[dataset name]"
+  raw_dir: "[path to raw data]"
+  processed_dir: "[path to processed/split data]"
+  train_split: "[e.g., 0.8]"
+  val_split: "[e.g., 0.1]"
+  test_split: "[e.g., 0.1]"
+  split_seed: 42
+
+model:
+  architecture: "[e.g., resnet18 / bert-base / custom_cnn]"
+  pretrained: false
+  num_classes: "[N]"
+
+training:
+  optimizer: "[e.g., adamw]"
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 50
+  weight_decay: 0.0001
+  lr_scheduler: "[e.g., cosine / step / none]"
+
+hardware:
+  gpu: "[e.g., 1x NVIDIA T4 16GB]"
+  precision: "[e.g., fp32 / fp16 / bf16]"
+
+logging:
+  log_dir: "[e.g., runs/expA]"
+  experiment_id: "[e.g., wandb run id — fill in after the run]"
+
+checkpoint:
+  save_dir: "checkpoints/"
+  save_best_only: true

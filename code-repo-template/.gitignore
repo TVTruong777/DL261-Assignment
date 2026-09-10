@@ -1,0 +1,25 @@
+# Environments
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Data & large artifacts (host these elsewhere; keep repo lean)
+data/raw/
+data/processed/
+*.pt
+*.ckpt
+*.h5
+!checkpoints/README.md
+
+# Logs / experiment tracking
+runs/
+wandb/
+logs/
+*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,13 @@
+name: [env-name]
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - -r requirements.txt
+# Replace with the exact, pinned environment used for the reported results.
+# Export the real one with: conda env export --no-builds > environment/environment.yml
