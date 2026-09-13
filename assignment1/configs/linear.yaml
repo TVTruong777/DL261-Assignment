@@ -1,0 +1,38 @@
+# Linear / softmax classifier — main comparison on Fashion-MNIST
+experiment_name: "linear_fashion_mnist"
+seed: 42
+deterministic: true
+
+data:
+  dataset_name: "fashion_mnist"   # debug on "mnist" first if needed, then switch here
+  root: "./data"
+  val_fraction: 0.1
+  split_seed: 42                  # MUST match across all 5 model configs for a fair comparison
+  representation: "flatten"
+  augment: false
+
+model:
+  name: "linear"
+  params: {}
+
+training:
+  batch_size: 128
+  epochs: 20
+  optimizer: "adamw"
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  lr_scheduler: "none"
+  num_workers: 2
+
+checkpoint:
+  save_dir: "checkpoints"
+  selection_metric: "accuracy"   # metric on the val set used to pick the best epoch
+
+hardware:
+  device: "auto"                  # "auto" | "cpu" | "cuda"
+  # Fill in after running, for the report:
+  gpu: "[e.g., 1x NVIDIA T4 16GB, or 'CPU only']"
+
+logging:
+  log_dir: "results/runs"
+  experiment_log: "results/experiment_log.csv"

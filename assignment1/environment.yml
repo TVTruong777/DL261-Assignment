@@ -1,0 +1,17 @@
+name: dl-a1
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - -r requirements.txt
+
+# Reproduce exactly:
+#   conda env create -f environment.yml
+#   conda activate dl-a1
+#
+# After you've settled on final package versions, regenerate a locked file with:
+#   pip freeze > requirements.lock.txt
