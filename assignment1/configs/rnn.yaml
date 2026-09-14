@@ -1,0 +1,45 @@
+# LSTM (default) — main comparison on Fashion-MNIST.
+# Image is represented as a sequence of rows (timestep = one row of pixels).
+# To run the optional LSTM-vs-GRU extension, copy this file to rnn_gru.yaml
+# and change model.params.cell_type to "gru" (change experiment_name too).
+experiment_name: "rnn_lstm_rows_fashion_mnist"
+seed: 42
+deterministic: true
+
+data:
+  dataset_name: "fashion_mnist"
+  root: "./data"
+  val_fraction: 0.1
+  split_seed: 42
+  representation: "seq_rows"   # each timestep = one image row; try "seq_cols" as an ablation
+  augment: false
+
+model:
+  name: "rnn"
+  params:
+    cell_type: "lstm"           # "lstm" | "gru"
+    hidden_dim: 128
+    num_layers: 2
+    bidirectional: false
+    dropout: 0.2
+
+training:
+  batch_size: 128
+  epochs: 25
+  optimizer: "adamw"
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  lr_scheduler: "cosine"
+  num_workers: 2
+
+checkpoint:
+  save_dir: "checkpoints"
+  selection_metric: "accuracy"
+
+hardware:
+  device: "auto"
+  gpu: "[fill in after running]"
+
+logging:
+  log_dir: "results/runs"
+  experiment_log: "results/experiment_log.csv"

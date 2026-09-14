@@ -1,0 +1,2 @@
+result_name,metric,value,config_file,dataset_split,checkpoint,log_experiment_id,git_commit_or_tag,seed,date
+"[e.g., Test accuracy]","[accuracy]","[0.912]","configs/config_expA.yaml","[test split name/version]","checkpoints/expA_best.pt","[e.g., wandb run id or local log path]","[git commit hash or tag]","42","[YYYY-MM-DD]"
