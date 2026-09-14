@@ -1,0 +1,40 @@
+# Debug/development config — MNIST, small epoch count, CNN as a quick smoke test.
+# Use this to sanity-check the pipeline before running the full Fashion-MNIST
+# comparison. Do NOT report numbers from this config as main results.
+experiment_name: "debug_mnist_cnn"
+seed: 42
+deterministic: true
+
+data:
+  dataset_name: "mnist"
+  root: "./data"
+  val_fraction: 0.1
+  split_seed: 42
+  representation: "image"
+  augment: false
+
+model:
+  name: "cnn"
+  params:
+    base_channels: 16
+    dropout: 0.2
+
+training:
+  batch_size: 256
+  epochs: 2
+  optimizer: "adamw"
+  learning_rate: 0.001
+  weight_decay: 0.0
+  lr_scheduler: "none"
+  num_workers: 2
+
+checkpoint:
+  save_dir: "checkpoints"
+  selection_metric: "accuracy"
+
+hardware:
+  device: "auto"
+
+logging:
+  log_dir: "results/runs"
+  experiment_log: "results/experiment_log.csv"

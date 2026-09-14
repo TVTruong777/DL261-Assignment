@@ -1,0 +1,39 @@
+# Multilayer Perceptron — main comparison on Fashion-MNIST
+experiment_name: "mlp_fashion_mnist"
+seed: 42
+deterministic: true
+
+data:
+  dataset_name: "fashion_mnist"
+  root: "./data"
+  val_fraction: 0.1
+  split_seed: 42                  # keep identical to configs/linear.yaml, cnn.yaml, etc.
+  representation: "flatten"
+  augment: false
+
+model:
+  name: "mlp"
+  params:
+    hidden_dims: [256, 128]
+    dropout: 0.2
+
+training:
+  batch_size: 128
+  epochs: 25
+  optimizer: "adamw"
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  lr_scheduler: "cosine"
+  num_workers: 2
+
+checkpoint:
+  save_dir: "checkpoints"
+  selection_metric: "accuracy"
+
+hardware:
+  device: "auto"
+  gpu: "[fill in after running]"
+
+logging:
+  log_dir: "results/runs"
+  experiment_log: "results/experiment_log.csv"

@@ -1,0 +1,44 @@
+# Transformer encoder — main comparison on Fashion-MNIST.
+# Image is represented as non-overlapping 4x4 patches (7x7 = 49 tokens for 28x28 input).
+experiment_name: "transformer_patch4_fashion_mnist"
+seed: 42
+deterministic: true
+
+data:
+  dataset_name: "fashion_mnist"
+  root: "./data"
+  val_fraction: 0.1
+  split_seed: 42
+  representation: "patches"
+  patch_size: 4
+  augment: false
+
+model:
+  name: "transformer"
+  params:
+    d_model: 128
+    num_heads: 4
+    num_layers: 4
+    mlp_ratio: 4
+    dropout: 0.1
+
+training:
+  batch_size: 128
+  epochs: 30
+  optimizer: "adamw"
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  lr_scheduler: "cosine"
+  num_workers: 2
+
+checkpoint:
+  save_dir: "checkpoints"
+  selection_metric: "accuracy"
+
+hardware:
+  device: "auto"
+  gpu: "[fill in after running]"
+
+logging:
+  log_dir: "results/runs"
+  experiment_log: "results/experiment_log.csv"
