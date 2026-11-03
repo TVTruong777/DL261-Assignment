@@ -19,11 +19,11 @@ class MLP(nn.Module):
   def __init__(self):
     super().__init__()
     self.flatten = nn.Flatten()
-    self.fc1 = nn.Linear(28 * 28, 100 * 100)
-    self.fc2 = nn.Linear(100 * 100, 50 * 50)
-    self.fc3 = nn.Linear(50 * 50, 25 * 25)
-    self.fc4 = nn.Linear(25 * 25, 10 * 10)
-    self.output = nn.Linear(10 * 10, 10)
+    self.fc1 = nn.Linear(28 * 28, 50 * 50)
+    self.fc2 = nn.Linear(50 * 50, 25 * 25)
+    self.fc3 = nn.Linear(25 * 25, 13 * 13)
+    self.fc4 = nn.Linear(13 * 13, 6 * 6)
+    self.output = nn.Linear(6 * 6, 10)
   def forward(self, x):
     x = self.flatten(x)
     x = F.relu(self.fc1(x))
@@ -50,3 +50,15 @@ class ConvNet(nn.Module):
     x = F.relu(x)
     x = self.output(x)
     return x 
+
+class LSTMnet(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.lstm = nn.LSTM(input_size = 28, hidden_size = 128, batch_first = True, num_layers = 2)
+    self.output = nn.Linear(128, 10)
+  def forward(self, x):
+    x = x.squeeze(1)
+    x, _ = self.lstm(x)
+    x = x[:, -1, :]
+    x = self.output(x)
+    return x
