@@ -1,9 +1,11 @@
 from google.colab import drive
+from typing import Literal
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
 import torch
 import time
+import math
 
 drive.mount('/content/drive')
 
@@ -72,15 +74,16 @@ from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def evaluate_model_metrics(best_models, loader):
-  pred_list = []
-  label_list = []
+def evaluate_model_metrics(best_models, loader, device):
   model_result = {}
   for model_name, info in best_models.items():
+    pred_list = []
+    label_list = []
     model = info[0]
     train_time = info[3]
+    if torch.cuda.is_available():
+      torch.cuda.synchronize()
     start_time = time.perf_counter()
-
     #inference
     model.eval()
     with torch.no_grad():
@@ -129,3 +132,42 @@ def plot_models_curve(best_models):
     plt.grid(axis = 'both', alpha = 0.5)
     plt.legend()
     plt.show()
+
+def error_analysis(best_models, model_name: Literal["Conv Model", "LSTM Model", "Linear Model", "MLP Model", "Vision Transformer"], loader, device):
+  model = best_models[model_name][0]
+  model.eval()
+  images, labels = next(iter(loader))
+  images = images.to(device)
+  labels = labels.to(device)
+
+  with torch.no_grad():
+    logits = model(images)
+    pred = logits.argmax(dim = 1)
+    incorrect_indices = torch.where(pred != labels)[0]
+
+  class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress',
+                 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+
+  display_error(images = images,
+                classes = class_names,
+                indices = incorrect_indices,
+                predictions = pred,
+                labels = labels,
+                num_imgs = len(incorrect_indices))
+
+def display_error(images, classes, indices, predictions, labels, num_imgs):
+  fig, axes = plt.subplots(nrows = math.ceil(num_imgs / 4), ncols = 4, figsize = (15, 5))
+
+  for i, ax in enumerate(axes.flatten()):
+    if i < len(indices):
+      idx = indices[i]
+      img = images[idx].cpu().squeeze().numpy()
+      predicted_class = classes[predictions[idx].item()]
+      actual_class = classes[labels[idx].item()]
+      ax.imshow(img, cmap = 'grey')
+      ax.set_title(f"Label:{actual_class}; Predict:{predicted_class}", color = 'green' if predicted_class == actual_class else 'red', fontsize = 11)
+      ax.axis('off')
+    else:
+      ax.axis('off')
+  plt.tight_layout()
+  plt.show()
